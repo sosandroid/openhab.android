@@ -15,9 +15,6 @@ package org.openhab.habdroid.model;
 
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -43,11 +40,7 @@ public class OpenHABWidgetDataSource {
 	public OpenHABWidgetDataSource(Node rootNode) {
 		setSourceNode(rootNode);
 	}
-
-    public OpenHABWidgetDataSource(JSONObject jsonObject) {
-        setSourceJson(jsonObject);
-    }
-
+	
 	public void setSourceNode(Node rootNode) {
 		Log.i(TAG, "Loading new data");
         if (rootNode == null)
@@ -72,32 +65,6 @@ public class OpenHABWidgetDataSource {
 			}
 		}
 	}
-
-    public void setSourceJson(JSONObject jsonObject) {
-        Log.d(TAG, jsonObject.toString());
-        if (!jsonObject.has("widgets"))
-            return;
-        rootWidget = new OpenHABWidget();
-        rootWidget.setType("root");
-        try {
-            JSONArray jsonWidgetArray = jsonObject.getJSONArray("widgets");
-            for (int i=0; i<jsonWidgetArray.length(); i++) {
-                JSONObject widgetJson = jsonWidgetArray.getJSONObject(i);
-                Log.d(TAG, widgetJson.toString());
-                new OpenHABWidget(rootWidget, widgetJson);
-            }
-            if (jsonObject.has("title"))
-                this.setTitle(jsonObject.getString("title"));
-            if (jsonObject.has("id"))
-                this.setId(jsonObject.getString("id"));
-            if (jsonObject.has("icon"))
-                this.setIcon(jsonObject.getString("icon"));
-            if (jsonObject.has("link"))
-                this.setLink(jsonObject.getString("link"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 	
 	public OpenHABWidget getRootWidget() {
 		return this.rootWidget;

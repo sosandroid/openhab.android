@@ -29,7 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import org.openhab.habdroid.R;
 import org.openhab.habdroid.util.Util;
@@ -51,13 +51,13 @@ public class OpenHABWriteTagActivity extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
-        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+		EasyTracker.getInstance().activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+		EasyTracker.getInstance().activityStop(this);
 	}
 
 	@Override

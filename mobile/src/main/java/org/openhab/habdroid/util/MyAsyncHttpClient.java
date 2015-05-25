@@ -30,8 +30,7 @@ public class MyAsyncHttpClient extends AsyncHttpClient {
 	private SSLSocketFactory sslSocketFactory;
 	
 	public MyAsyncHttpClient(Context ctx) {
-        super();
-//		super(ctx);
+		super(ctx);
 		try {
 	        sslContext = SSLContext.getInstance("TLS");
 	        sslContext.init(null, MemorizingTrustManager.getInstanceList(ctx), new java.security.SecureRandom());

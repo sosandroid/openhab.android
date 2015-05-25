@@ -13,8 +13,6 @@
 
 package org.openhab.habdroid.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -46,21 +44,6 @@ public class OpenHABLinkedPage {
 			}
 		}
 	}
-
-    public OpenHABLinkedPage(JSONObject jsonObject) {
-        try {
-            if (jsonObject.has("id"))
-                this.setId(jsonObject.getString("id"));
-            if (jsonObject.has("title"))
-                this.setTitle(jsonObject.getString("title"));
-            if (jsonObject.has("icon"))
-                this.setIcon(jsonObject.getString("icon"));
-            if (jsonObject.has("link"))
-                this.setLink(jsonObject.getString("link"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
 	public String getId() {
 		return id;

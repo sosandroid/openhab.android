@@ -179,16 +179,6 @@ public class OpenHABTracker implements AsyncServiceResolverListener {
         }
     }
 
-    public static int getCurrentNetworkConnectivityType(Context ctx) {
-        ConnectivityManager connectivityManager = (ConnectivityManager)ctx.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        if (activeNetworkInfo != null) {
-            return activeNetworkInfo.getType();
-        }
-        return -1;
-    }
-
     private boolean checkUrlReachability(String urlString) {
         Log.d(TAG, "Checking reachability of " + urlString);
         try {

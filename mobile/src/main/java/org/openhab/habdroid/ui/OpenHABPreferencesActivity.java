@@ -15,7 +15,6 @@ package org.openhab.habdroid.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -23,7 +22,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import org.openhab.habdroid.R;
 import org.openhab.habdroid.util.Constants;
@@ -42,13 +41,13 @@ public class OpenHABPreferencesActivity extends PreferenceActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+		EasyTracker.getInstance().activityStart(this);
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+		EasyTracker.getInstance().activityStop(this);
 	}
 
 	@Override
@@ -60,11 +59,13 @@ public class OpenHABPreferencesActivity extends PreferenceActivity {
 	    Preference altUrlPreference = getPreferenceScreen().findPreference(Constants.PREFERENCE_ALTURL);
 	    Preference usernamePreference = getPreferenceScreen().findPreference(Constants.PREFERENCE_USERNAME);
 	    Preference passwordPreference = getPreferenceScreen().findPreference(Constants.PREFERENCE_PASSWORD);
+	    ListPreference themePreference = (ListPreference)getPreferenceScreen().findPreference(Constants.PREFERENCE_THEME);
+	    ListPreference animationPreference = (ListPreference)getPreferenceScreen().findPreference(Constants.PREFERENCE_ANIMATION);
 	    Preference versionPreference = getPreferenceScreen().findPreference(Constants.PREFERENCE_APPVERSION);
 	    urlPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				Log.d("PreferencesActivity", "Validating new url = " + (String) newValue);
+				Log.d("OpenHABPreferencesActivity", "Validating new url = " + (String) newValue);
 				String newUrl = (String)newValue;
 				if (newUrl.length() == 0 || urlIsValid(newUrl)) {
 					updateTextPreferenceSummary(preference, (String)newValue);
@@ -104,13 +105,25 @@ public class OpenHABPreferencesActivity extends PreferenceActivity {
 			}
 	    });
 	    updatePasswordPreferenceSummary(passwordPreference, null);
+	    themePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				ListPreference listPreference = (ListPreference)preference;
+				listPreference.setSummary(listPreference.getEntries()[listPreference.findIndexOfValue((String)newValue)]);
+				return true;
+			}
+	    });
+	    themePreference.setSummary(themePreference.getEntry());
+	    animationPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				ListPreference listPreference = (ListPreference)preference;
+				listPreference.setSummary(listPreference.getEntries()[listPreference.findIndexOfValue((String)newValue)]);
+				return true;
+			}
+	    });
+	    animationPreference.setSummary(animationPreference.getEntry());
 	    updateTextPreferenceSummary(versionPreference, null);
-
-        //fullscreen is not supoorted in builds < 4.4
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getPreferenceScreen().removePreference(getPreferenceScreen().findPreference(Constants.PREFERENCE_FULLSCREEN));
-        }
-
 	    setResult(RESULT_OK);
 	}
 	

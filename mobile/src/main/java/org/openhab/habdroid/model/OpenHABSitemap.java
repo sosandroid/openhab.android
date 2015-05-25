@@ -13,15 +13,10 @@
 
 package org.openhab.habdroid.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class OpenHABSitemap implements Parcelable {
+public class OpenHABSitemap {
 	private String name;
     private String label;
 	private String link;
@@ -62,34 +57,7 @@ public class OpenHABSitemap implements Parcelable {
 			}
 		}
 	}
-
-    public OpenHABSitemap(JSONObject jsonObject) {
-        try {
-            if (jsonObject.has("name"))
-                this.setName(jsonObject.getString("name"));
-            if (jsonObject.has("label"))
-                this.setLabel(jsonObject.getString("label"));
-            if (jsonObject.has("link"))
-                this.setLink(jsonObject.getString("link"));
-            if (jsonObject.has("icon"))
-                this.setIcon(jsonObject.getString("icon"));
-            if (jsonObject.has("homepage")) {
-                JSONObject homepageObject = jsonObject.getJSONObject("homepage");
-                this.setHomepageLink(homepageObject.getString("link"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private OpenHABSitemap(Parcel in) {
-        this.name = in.readString();
-        this.label = in.readString();
-        this.link = in.readString();
-        this.icon = in.readString();
-        this.homepageLink = in.readString();
-    }
-
+	
 	public String getName() {
 		return name;
 	}
@@ -130,29 +98,4 @@ public class OpenHABSitemap implements Parcelable {
     public void setLeaf(boolean isLeaf) {
         leaf = isLeaf;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(label);
-        dest.writeString(link);
-        dest.writeString(icon);
-        dest.writeString(homepageLink);
-    }
-
-    public static final Parcelable.Creator<OpenHABSitemap> CREATOR = new Parcelable.Creator<OpenHABSitemap>() {
-        public OpenHABSitemap createFromParcel(Parcel in) {
-            return new OpenHABSitemap(in);
-        }
-
-        public OpenHABSitemap[] newArray(int size) {
-            return new OpenHABSitemap[size];
-        }
-    };
-
 }
